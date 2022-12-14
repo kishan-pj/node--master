@@ -28,6 +28,7 @@ const deleteCategory= (req,res,next) =>{
     .catch(next)
 
 }
+
 const getallCategoryById=(req,res,next) =>{
     category.findById(req.params.caegory_id)
     .populate('books')
