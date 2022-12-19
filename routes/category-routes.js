@@ -1,18 +1,17 @@
-const express =require('express')
-const categoryController=require('../controllers/categories_controller')
-
-const router =express.Router()
+const express =  require('express')
+const router = express.Router()
+const categorycontroller =  require("../contollers/category_controller")
 
 router.route('/')
-.get(categoryController.getallCategory)
-.post(categoryController.createCategory)
-.put((req,res)=>res.status(501).json({"reply":"Method not supported"}))
-.delete(categoryController.deleteCategory)
+.get(categorycontroller.getallcategory)
+.post(categorycontroller.postnewcategory)
+.put((req,res)=>{res.status(501).json({"Reply": "Not Implemented"})})
+.delete(categorycontroller.deletecategory)
 
 router.route('/:category_id')
-.get(categoryController.getallCategoryById)
-.put(categoryController.updateallCategoryById)
-.post((req,res)=>res.status(501).json({"reply":"Method not supported"}))
-.delete(categoryController.deleteCategoryById)
+.get(categorycontroller.getcategorybyId)
+.post((req,res)=>{res.status(501).json({"Reply": "Not Implemented"})})
+.put(categorycontroller.editcategorybyId)
+.delete(categorycontroller.deletecategorybyId)
 
-module.exports=router
+module.exports =  router

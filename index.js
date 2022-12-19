@@ -1,9 +1,7 @@
 //  const date_fns =  require("date-fns")
 // const uuid  =  require("uuid")
 
-
-// let id=  (uuid.v4())  
-
+// let id=  (uuid.v4())
 
 // const { Console } = require('console')
 // const os = require('os')
@@ -11,15 +9,9 @@
 // const  fs = require('fs')
 // const fspromises = require('fs').promises
 
-
 // const prompt = require('prompt-sync')();
 
-
-
-
 // const data = prompt('Write a message ? ');
-
-
 
 // const fileOperation = async()=>{
 
@@ -33,44 +25,74 @@
 //     }
 //     catch (err){
 //         console.error(err)
-        
+
 //     }
-    
+
 // }
 
 // fileOperation()
 
-
-const express = require('express')
-const logger = require('./looger')
-const app = express()
-const path =  require('path')
+require('dotenv').config()
+const express = require("express");
+const logger = require("./looger");
+const app = express();
+const path = require("path");
 const port = 3000;
-const book_routes = require("./routes/books-router")
-const books = require('./data/books')
-const mongoose =  require("mongoose")
-const category_routes = require("./routes/category-routes")
+const book_routes = require("./routes/books-router");
+const category_routes = require("./routes/category-routes");
 const user_routes = require("./routes/user-routes")
+const books = require("./data/books");
+const auth =require('./middleware/auth')
+const mongoose = require("mongoose");
+
+const router = require("./routes/books-router");
+
+mongoose.set('strictQuery', false);
+
+mongoose
+  .connect("mongodb://127.0.0.1:27017/books")
+  .then(() => {
+    console.log("connected to mongodb server");
+  })
+  .catch((err) => next(err));
+
+app.use((req, res, next) => {
+  next();
+});
+
+app.use(express.json());
+
+app.get("^/$|/index(.html)?", (req, res) => {
+  // res.send("hello World")
+  res.sendFile(path.join(__dirname, "views", "index.html"));
+});
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/books')
-.then(()=>{
-    console.log("connected to mongodb server")})
-.catch((err)=>{console.error(err)})
-app.use((req,res,next)=>{
+app.use('/user', user_routes)
+app.use(auth.verifyUser)
 
-    next()
+app.use("/books", book_routes);
+app.use("/category", category_routes);
+
+app.listen(port, () => {
+  console.log(`App is running on port : ${port}`);
+});
+
+
+router.post('/register',(req, res,next)=>{
+
 })
 
-app.use(express.json())
 
-app.get('^/$|/index(.html)?',(req,res)=>{
-    // res.send("hello World")
-    res.sendFile(path.join(__dirname,'views','index.html'))
+router.post('/login',(req, res,next)=>{
+  res.send("login request")
 })
 
-app.use('/books',book_routes)
-// app.use('/')
-app.listen(port,()=>{
-    console.log(`App is running on port : ${port}`)
-})
+
+//error handiling
+app.use((err, req, res, next) => {
+  console.log(err.stack)
+  if(res.statusCode ==200) res.status(500)
+  res.json({"msg":err.message})
+});
+module.exports=router
