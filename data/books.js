@@ -1,3 +1,5 @@
+const { default: mongoose } = require("mongoose");
+
 const books = [
     {
         'id' : 1,
@@ -9,7 +11,8 @@ const books = [
         'id' : 2,
         'title' : ' the Alchemist',
         'author' : 'Paulo Choelo' 
-    }
-]
+    },
+    
+];
 
 module.exports = books

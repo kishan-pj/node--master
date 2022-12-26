@@ -95,4 +95,5 @@ app.use((err, req, res, next) => {
   if(res.statusCode ==200) res.status(500)
   res.json({"msg":err.message})
 });
-module.exports=router
+
+// module.exports=router
