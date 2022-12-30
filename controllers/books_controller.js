@@ -2,7 +2,6 @@
 const { findByIdAndUpdate } = require('../models/Book')
 const Book =  require('../models/Book')
 
-
 const getAllBooks = (req,res)=>{
     Book.find().then((books)=>{
         res.json(books)
@@ -89,8 +88,6 @@ const deletebook = (req,res) =>{
     })
     res.json(newlist)
 
-
-
 }
 
 const putonebook = (req,res) =>{
@@ -104,5 +101,4 @@ const putonebook = (req,res) =>{
    res.json(updatedbooks)
 
 }
-
 module.exports = {getAllBooks,postnewbooks,putbook,deletebooks,getonebook,postonebook,deletebook,putonebook,updateBook,deletebookbyId}

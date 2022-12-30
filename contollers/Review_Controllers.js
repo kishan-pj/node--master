@@ -1,3 +1,4 @@
+const books = require('../data/books')
 const Book = require('../models/Book')
 
 
@@ -21,7 +22,23 @@ const createReview = (req, res, next) => {
         }).catch(next)
 }
 const updateReviewById=(req,res,next)=>{
-    // Book.findById(req.params.)
+    Book.findById(req.params.id)
+    .then(book=>{
+        let review=book.reviews.id(req.params.review._id)
+        if(review.reviewer!=req.userID){
+            res.status(403)
+            return next(new Error('Not authorised.'))
+        }
+        let updatedReviews=book.reviews.map((item)=>{
+            if(item.id==req.params.review_id){
+                if(item.reviewer=req.user.userId)
+                item.body=req.body.body
+            }
+            return item
+        })
+        book.reviews=updatedReviews
+        book.save().then(b => res.josn (b.reviews))
+    }).catch(next)
 }
 const deleteReview = (req, res, next) => {
     Book.findById(req.params.id)
@@ -34,7 +51,6 @@ const deleteReview = (req, res, next) => {
             )
         })
         .catch(next)
-
 }
 
 const getreviewbyId = (req, res, next) => {
@@ -51,22 +67,18 @@ const editreviewbyId = (req, res, next) => {
         let updates_reviews = book.reviews.map((item) => {
             if (item.id == req.params.reviewid) {
                 item.body = req.body.body
-
             }
             return item
         })
         book.reviews = updates_reviews
         book.save().then(b => res.json(b.reviews))
-
-
     })
         .catch(next)
-
 }
 
 const deletereviewbyId = (req, res, next) => {
-
-    Book.findById(req.params.id).then((book) => {
+    Book.findById(req.params.id)
+    .then((book) => {
         let updates_reviews = book.reviews.filter((item) => {
             return item.id != req.params.reviewid
 
@@ -88,5 +100,6 @@ module.exports = {
     deleteReview,
     getreviewbyId,
     editreviewbyId,
-    deletereviewbyId
+    deletereviewbyId,
+    updateReviewById
 }

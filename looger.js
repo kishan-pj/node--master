@@ -8,6 +8,5 @@ const log = (msg) =>{
     fs.appendFile(path.join(__dirname,'logs','event-logs.txt'),logItem, (err)=> console.log(err))
 }
 
-
 //  pure function is easily to test than impure function
 module.exports= {log};

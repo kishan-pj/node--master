@@ -11,7 +11,6 @@ router.route("/")
     .put(bookController.putbook)
     .delete(verifyUser,bookController.deletebooks)
 
-
 router.route('/:id')
     .get(bookController.getonebook)
     .post(bookController.postonebook)
@@ -24,7 +23,6 @@ router.route('/:id/reviews')
     .put((req,res )=>{
     res.status(501).json({"reply": "Method not supported"})})
     .delete(reviewController.deleteReview)
-
 
 router.route('/:id/reviews/:reviewid')
     .get(reviewController.getreviewbyId)
